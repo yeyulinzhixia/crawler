@@ -1,3 +1,11 @@
+'''
+Descripttion: 
+version: 
+Author: yeyu
+Date: 2021-03-31 20:34:20
+LastEditors: yeyu
+LastEditTime: 2021-03-31 20:39:20
+'''
 # Scrapy settings for video project
 #
 # For simplicity, this file contains only settings considered important or
@@ -89,7 +97,7 @@ ITEM_PIPELINES = {
 #MySQL Setting
 MYSQL_HOST = 'localhost'
 MYSQL_PORT = 3306
-MYSQL_USER = 'root'
-MYSQL_PASSWORD = 'Wxl200825'
-MYSQL_DB = 'bili'
-MYSQL_CHARSET = 'utf8mb4'
+MYSQL_USER = ''
+MYSQL_PASSWORD = ''
+MYSQL_DB = ''
+MYSQL_CHARSET = ''

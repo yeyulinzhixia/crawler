@@ -4,7 +4,7 @@ version:
 Author: yeyu
 Date: 2021-03-13 08:53:02
 LastEditors: yeyu
-LastEditTime: 2021-03-13 09:27:34
+LastEditTime: 2021-04-05 22:56:42
 '''
 # Scrapy settings for lyrics project
 #
@@ -71,9 +71,9 @@ DOWNLOADER_MIDDLEWARES = {
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'lyrics.pipelines.LyricsPipeline': 300,
-#}
+ITEM_PIPELINES = {
+   'lyrics.pipelines.LyricsPipeline': 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html

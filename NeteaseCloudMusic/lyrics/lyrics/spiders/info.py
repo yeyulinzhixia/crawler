@@ -4,7 +4,7 @@ version:
 Author: yeyu
 Date: 2021-03-13 08:55:14
 LastEditors: yeyu
-LastEditTime: 2021-03-31 20:51:35
+LastEditTime: 2021-04-05 23:19:44
 '''
 import scrapy
 
@@ -14,19 +14,25 @@ import json
 import re
 import pymongo
 
-myclient = pymongo.MongoClient("mongodb://localhost:27017/")
-mydb = myclient["netease"]
-mycol = mydb["lyrics"]
+from lyrics.items import LyricsItem
+
+
 
 class InfoSpider(scrapy.Spider):
     name = 'info'
     allowed_domains = ['163.com']
     start_urls = ['http://163.com/']
 
+
     def start_requests(self):
         connection = pymysql.connect(host='localhost', port=3306, user='', password='',db='',charset='utf8')
         cursor = connection.cursor()
-        x = mycol.find_one()  
+        
+
+        myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+        mydb = myclient["netease"]
+        mycol = mydb["lyrics"]
+        x = mycol.find_one()
         if x==None:
             sql = "select id from song2 order by id limit 10000"
         else:
@@ -34,6 +40,8 @@ class InfoSpider(scrapy.Spider):
         cursor.execute(sql)
         result = cursor.fetchall()
         cursor.close()
+        
+        
         url = 'https://music.163.com/api/song/lyric'
         for id in result:
             query ={'id':str(id[0]),'lv': '-1'}
@@ -49,6 +57,7 @@ class InfoSpider(scrapy.Spider):
         output['id'] = response.meta['id']
         return self.parse_lyrics(result['lrc']['lyric'],output)
     def parse_lyrics(self,text,output):
+        item = LyricsItem()
         for line in re.finditer('](.*)[:：](.*)\\n',text):
             if len(line.group(2))>8:
                 continue
@@ -61,4 +70,5 @@ class InfoSpider(scrapy.Spider):
                 if v.strip()!='':
                     output[k] = v.strip()
         if len(output)>1:
-            mycol.insert_one(output)
+            item['data'] = output
+            yield item
